@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mdsol.go.admin.ejemplo.modelo;
+package com.mdsol.go.admin.ejemplo.entidades;
 
 /**
  *
@@ -45,6 +45,11 @@ public class Proyecto {
     }
 
     public Proyecto() {
+    }
+
+    @Override
+    public String toString() {
+        return "Proyecto{" + "id=" + id + ", nombre=" + nombre + ", presupuesto=" + presupuesto + '}';
     }
     
     

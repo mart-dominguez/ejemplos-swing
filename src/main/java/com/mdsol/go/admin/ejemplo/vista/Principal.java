@@ -3,15 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.mdsol.go.admin.ejemplo.gui;
+package com.mdsol.go.admin.ejemplo.vista;
 
+import java.awt.CardLayout;
 import java.awt.Frame;
+import java.awt.Window;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -20,6 +24,7 @@ import javax.swing.JMenuItem;
 public class Principal {        
 
     private JFrame jframe;
+    private JPanel cards;
     private JMenuBar menuBar;
     private JMenu menu;
     private JMenuItem menuItemCategorias;
@@ -65,29 +70,34 @@ public class Principal {
         menuItemSalir.setActionCommand(Comandos.SALIR.name());        
         menuItemSalir.addActionListener(this.al);
         menu.add(menuItemSalir);
+        
+        //Create the panel that contains the "cards".
+        cards = new JPanel(new CardLayout());
+        cards.add(new PanelProyectos().build(), Comandos.PROYECTOS.toString());
+        cards.add(new PanelPrioridad().build(), Comandos.CATEGORIAS.toString());
+        cards.add(new PanelTareas().build(), Comandos.TAREAS.toString());
+        jframe.setContentPane(cards);
         jframe.setExtendedState(Frame.MAXIMIZED_BOTH);
         jframe.setJMenuBar(menuBar);
+        jframe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         jframe.setVisible(true);
         return jframe; 
     }
     
     private ActionListener al = (e ) -> {
-        System.out.println(e.getSource());
-        System.out.println(e.getActionCommand());
         switch(Comandos.valueOf(e.getActionCommand())){
             case CATEGORIAS:
-                System.out.println(" CATEGORIAS  - - - - ");
+                ((CardLayout) cards.getLayout()).show(cards, Comandos.CATEGORIAS.toString());
                 break;
              case PROYECTOS:
-                System.out.println(" PROYECTOS - - - - ");
+                ((CardLayout) cards.getLayout()).show(cards, Comandos.PROYECTOS.toString());
                 break;
              case TAREAS:
-                System.out.println(" TAREAS - - - - ");
+                ((CardLayout) cards.getLayout()).show(cards, Comandos.TAREAS.toString());
                 break;
              case SALIR:
-                System.out.println(" SALIR  - - - - ");
-                break;
-                
+                 System.exit(1);
+                 
         }
     };
     
