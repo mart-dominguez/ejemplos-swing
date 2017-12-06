@@ -8,13 +8,14 @@ package com.mdsol.go.admin.ejemplo.vista;
 import com.mdsol.go.admin.ejemplo.entidades.Tarea;
 import java.util.List;
 import javax.swing.event.TableModelListener;
+import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableModel;
 
 /**
  *
  * @author mdominguez
  */
-public class TareasTableModel  implements TableModel {
+public class TareasTableModel  extends  AbstractTableModel {
     
         private List<Tarea> lista;
         private String[] columnas ={"ID","Descripcion","Duracion","Costo Hora","Proyecto"};
@@ -71,12 +72,6 @@ public class TareasTableModel  implements TableModel {
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
         }
 
-        @Override
-        public void addTableModelListener(TableModelListener l) {        
-        }
-
-        @Override
-        public void removeTableModelListener(TableModelListener l) {
-        }
+        
     }
 

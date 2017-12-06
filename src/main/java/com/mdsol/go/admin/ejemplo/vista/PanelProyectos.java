@@ -5,6 +5,7 @@
  */
 package com.mdsol.go.admin.ejemplo.vista;
 
+import com.mdsol.go.admin.ejemplo.entidades.Proyecto;
 import com.mdsol.go.admin.ejemplo.model.ProyectoModel;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -15,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.text.NumberFormatter;
 
 /**
@@ -30,6 +32,7 @@ public class PanelProyectos {
     private JButton botonAddProyecto;
     private JTable tablaProyectos;
     private ProyectoModel modelo;
+    private ProyectoTableModel modeloTabla;
     
     public PanelProyectos(){
         modelo = new ProyectoModel();
@@ -68,19 +71,40 @@ public class PanelProyectos {
         txtPresupuesto = new JTextField(8);
         gbc.gridx=1;
         panel.add(txtPresupuesto,gbc);        
-
+        
+        gbc.gridy=0;
         gbc.gridy=3;
         gbc.gridwidth=2;
-        botonAddProyecto = new JButton();
+        botonAddProyecto = new JButton(" AGREGAR ");
         botonAddProyecto.addActionListener((e) ->{
-            modelo.crearProyecto(txtNombre.getText(),Double.valueOf(txtPresupuesto.getText()) );            
+            modelo.crearProyecto(txtNombre.getText(),Double.valueOf(txtPresupuesto.getText()) );      
+            //fireTableRowsInserted
+            int ultimaFila = modelo.listarProyectos().size()-1;
+            modeloTabla.fireTableRowsInserted(ultimaFila,ultimaFila );
         });
         panel.add(botonAddProyecto,gbc);        
 
+        
+        
+
+        gbc.gridx=0;
         gbc.gridy=4;
         gbc.gridwidth=2;
-        tablaProyectos = new JTable(new ProyectoTableModel(modelo.listarProyectos()));
+        modeloTabla = new ProyectoTableModel(modelo.listarProyectos());
+        tablaProyectos = new JTable(modeloTabla);
         panel.add(tablaProyectos);
+        ListSelectionModel selectionModel = tablaProyectos.getSelectionModel();
+        //tablaProyectos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        //tablaProyectos.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+        tablaProyectos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        selectionModel.addListSelectionListener((e) -> {
+            int filaIndice = ((ListSelectionModel)e.getSource()).getMinSelectionIndex();
+            Proyecto p = modeloTabla.getFila(filaIndice);
+            txtNombre.setText(p.getNombre());
+            txtPresupuesto.setText(p.getPresupuesto().toString());
+            
+        });
+        
         return panel;
     }
 }

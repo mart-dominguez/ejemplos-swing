@@ -17,6 +17,7 @@ import java.util.List;
 public class ProyectoModel {
     
     private ProyectoDao dao;
+    List<Proyecto> lista;
     
     public ProyectoModel(){
         dao = new ProyectoDaoSQL();
@@ -26,11 +27,13 @@ public class ProyectoModel {
         Proyecto p = new Proyecto(null,nombre,presupuesto);        
         this.dao.crear(p);
         System.out.println(p);
+        lista.add(p);
         return p;
     }
 
     public List<Proyecto> listarProyectos(){
-        return this.dao.buscar();
+        if(lista==null) lista = this.dao.buscar();
+        return lista;
     }
 
     
